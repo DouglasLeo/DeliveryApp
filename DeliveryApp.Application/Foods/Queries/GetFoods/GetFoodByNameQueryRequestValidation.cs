@@ -6,7 +6,7 @@ public class GetFoodByNameQueryRequestValidation : AbstractValidator<GetFoodByNa
 {
     public GetFoodByNameQueryRequestValidation()
     {
-        RuleFor(x => x.Name).MinimumLength(3).WithMessage("Name minimal length is 3.").MaximumLength(150)
-            .WithMessage("Name maximum length is 150.");
+        RuleFor(x => x.Name).MinimumLength(3).WithMessage("Name minimal length is 3.").MaximumLength(250)
+            .WithMessage("Name maximum length is 250.");
     }
 }

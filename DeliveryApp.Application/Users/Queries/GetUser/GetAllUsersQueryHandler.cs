@@ -11,6 +11,6 @@ public class GetAllUsersQueryHandler(IUserRepository userRepository)
     : IRequestHandler<GetAllUserQuery, PaginatedList<UserDto>>
 {
     public async Task<PaginatedList<UserDto>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
-        => await userRepository.GetAllUsersOrderedByName(cancellationToken)
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+        => await userRepository.GetAllUsersOrderedByName()
+            .PaginatedListAsync(request.PageNumber, request.PageSize, cancellationToken);
 }

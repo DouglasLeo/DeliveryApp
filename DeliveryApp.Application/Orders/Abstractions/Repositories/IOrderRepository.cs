@@ -6,6 +6,6 @@ namespace DeliveryApp.Application.Orders.Abstractions.Repositories;
 
 public interface IOrderRepository : IRepository<Order>
 {
-    Task<IEnumerable<OrderDto>> FindAllOrdersById(Guid requestUserId, CancellationToken cancellationToken);
-    Task<OrderDto> FindOrderById(Guid requestUserId, CancellationToken cancellationToken);
+    Task<IEnumerable<OrderDto>> FindAllOrdersById(Guid userId, CancellationToken cancellationToken);
+    Task<OrderDto?> FindOrderById(Guid id, CancellationToken cancellationToken);
 }

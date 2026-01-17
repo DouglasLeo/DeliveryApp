@@ -20,8 +20,8 @@ public class UpdateOrderHandler(
 
         var order = await orderRepository.FindById(request.Id, cancellationToken) ??
                     throw new NotFoundException("Order not found");
-
-        order.EOrderStatus = request.OrderStatus;
+        
+        order.Update(request.OrderStatus);
 
         await orderRepository.Update(order, cancellationToken);
         await orderRepository.SaveChanges(cancellationToken);

@@ -12,12 +12,10 @@ public class UpdateUserPasswordHandler(IUserRepository userRepository)
 {
     public async Task<Guid> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.FindById(request.Id, cancellationToken);
+        var user = await userRepository.FindById(request.Id, cancellationToken) ?? throw new NotFoundException("User not found");
 
-        if (user is null) throw new NotFoundException("User not found");
-
-        user.Password = BC.HashPassword(request.Password);
-
+        user.UpdatePassword(BC.HashPassword(request.Password));
+//TODO: permitir apenas o token que bata com o id do request, ou seja só o dono da conta pode alterar a propria senha
         await userRepository.Update(user, cancellationToken);
         await userRepository.SaveChanges(cancellationToken);
 

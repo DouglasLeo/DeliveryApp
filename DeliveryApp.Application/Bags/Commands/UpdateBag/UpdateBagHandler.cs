@@ -13,10 +13,9 @@ public class UpdateBagHandler(IBagRepository bagRepository) : IRequestHandler<Up
         var bag = await bagRepository.FindById(request.Id, cancellationToken) ??
                   throw new NotFoundException("Bag not found");
 
-        bag.FoodsIds = request.FoodsIds;
+        bag.Update(request.FoodsIds);
 
         await bagRepository.Update(bag, cancellationToken);
-        await bagRepository.SaveChanges(cancellationToken);
 
         return bag.Id;
     }

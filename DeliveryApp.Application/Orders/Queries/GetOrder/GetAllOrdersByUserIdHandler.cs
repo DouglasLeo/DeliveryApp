@@ -7,7 +7,7 @@ namespace DeliveryApp.Application.Orders.Queries.GetOrder;
 
 public record GetAllOrderByUserIdQuery(Guid UserId) : IRequest<IEnumerable<OrderDto>>;
 
-public class GetAllOrderByUserIdHandler(IOrderRepository orderRepository, IUserRepository userRepository)
+public class GetAllOrdersByUserIdHandler(IOrderRepository orderRepository, IUserRepository userRepository)
     : IRequestHandler<GetAllOrderByUserIdQuery, IEnumerable<OrderDto>>
 {
     public async Task<IEnumerable<OrderDto>> Handle(GetAllOrderByUserIdQuery request,

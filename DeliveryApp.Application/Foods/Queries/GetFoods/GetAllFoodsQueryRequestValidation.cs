@@ -6,6 +6,8 @@ public class GetAllFoodsQueryRequestValidation : AbstractValidator<GetAllFoodsQu
 {
     public GetAllFoodsQueryRequestValidation()
     {
-        RuleFor(x => x.Take).GreaterThan(0);
+        RuleFor(x => x.Take).GreaterThanOrEqualTo(0);
+
+        RuleFor(x => x.Take).InclusiveBetween(1, 100).WithMessage("Take must be between 1 and 100");
     }
 }

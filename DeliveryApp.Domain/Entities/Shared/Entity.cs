@@ -1,4 +1,4 @@
-namespace DeliveryApp.Domain.Entities;
+namespace DeliveryApp.Domain.Entities.Shared;
 
 public abstract class Entity : IEquatable<Guid>
 {

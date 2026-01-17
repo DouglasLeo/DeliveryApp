@@ -14,8 +14,7 @@ public class UpdateUserHandler(IUserRepository userRepository) : IRequestHandler
 
         if (user is null) throw new NotFoundException("User not found");
 
-        user.Name = request.Name;
-        user.Email = request.Email;
+        user.Update(request.Name, request.Email);
 
         await userRepository.Update(user, cancellationToken);
         await userRepository.SaveChanges(cancellationToken);

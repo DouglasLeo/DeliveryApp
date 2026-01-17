@@ -11,7 +11,7 @@ public record UpdateFoodCommand(
     decimal Price,
     Guid FoodCategoryId,
     bool Active,
-    Guid? TagId) : IRequest<Guid>;
+    IEnumerable<Guid> TagIds) : IRequest<Guid>;
 
 public class UpdateFoodHandler(
     IFoodRepository foodRepository,
@@ -26,21 +26,11 @@ public class UpdateFoodHandler(
         var food = await foodRepository.FindById(request.Id, cancellationToken) ??
                    throw new NotFoundException("Food not found");
 
-        food.Name = request.Name;
-        food.Description = request.Description;
-        food.Price = request.Price;
-        food.FoodCategoryId = request.FoodCategoryId;
-        food.FoodCategory = category;
-        food.Active = request.Active;
+        var tags = request.TagIds.Any()
+            ? await tagRepository.FindTagsByIds(request.TagIds, cancellationToken)
+            : [];
 
-        if (request.TagId.HasValue)
-        {
-            var tag = await tagRepository.FindById(request.TagId.Value, cancellationToken) ??
-                      throw new NotFoundException("Tag not found");
-
-            food.Tag = tag;
-            food.TagId = request.TagId;
-        }
+        food.Update(request.Name, request.Description, request.Price, request.FoodCategoryId, request.Active, tags);
 
         await foodRepository.Update(food, cancellationToken);
         await foodRepository.SaveChanges(cancellationToken);

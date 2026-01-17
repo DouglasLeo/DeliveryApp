@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace DeliveryApp.Application.Users.Queries.GetUser;
 
-public class GetAllUserQueryRequestValidation : AbstractValidator<GetAllUserQuery>
+public class GetAllUsersQueryRequestValidation : AbstractValidator<GetAllUserQuery>
 {
-    public GetAllUserQueryRequestValidation()
+    public GetAllUsersQueryRequestValidation()
     {
         RuleFor(x => x.PageNumber)
             .GreaterThanOrEqualTo(1).WithMessage("PageNumber at least greater than or equal to 1.");

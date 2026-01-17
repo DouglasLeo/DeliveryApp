@@ -1,6 +1,12 @@
+using DeliveryApp.Application.Adresses.Queries;
 using DeliveryApp.Application.Foods.Queries.DTOs;
 using DeliveryApp.Domain.Enums;
 
 namespace DeliveryApp.Application.Orders.Queries;
 
-public record OrderDto(Guid Id, EOrderStatus EOrderStatus, DateTime Created, IEnumerable<FoodDto> FoodDtos);
+public record OrderDto(
+    Guid Id,
+    EOrderStatus EOrderStatus,
+    DateTime Created,
+    IEnumerable<FoodDto> FoodDtos,
+    AddressDto AddressDto);

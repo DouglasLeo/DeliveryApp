@@ -9,6 +9,6 @@ public record GetUserByEmailQuery(string Email) : IRequest<UserDto>;
 public class GetUserByEmailQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUserByEmailQuery, UserDto>
 {
     public async Task<UserDto> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken) =>
-        await userRepository.FindByEmail(request.Email, cancellationToken) ??
+        await userRepository.FindUserDtoByEmail(request.Email, cancellationToken) ??
         throw new NotFoundException("User not found");
 }

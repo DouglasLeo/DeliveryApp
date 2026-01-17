@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DeliveryApp.Application.Foods.Commands.CreateFoodCategory;
 
-public record CreateFoodCategoryCommand(string Name, bool Active) : IRequest<Guid>;
+public record CreateFoodCategoryCommand(string Name) : IRequest<Guid>;
 
 public class CreateFoodCategoryHandler(IFoodCategoryRepository foodCategoryRepository)
     : IRequestHandler<CreateFoodCategoryCommand, Guid>
@@ -17,11 +17,7 @@ public class CreateFoodCategoryHandler(IFoodCategoryRepository foodCategoryRepos
         if (foodCategory is not null)
             throw new AlreadyExistsException($"Food Category with name {request.Name} already exists.");
 
-        var category = new FoodCategory
-        {
-            Name = request.Name,
-            Active = request.Active
-        };
+        var category = FoodCategory.Create(request.Name);
 
         await foodCategoryRepository.Add(category, cancellationToken);
         await foodCategoryRepository.SaveChanges(cancellationToken);

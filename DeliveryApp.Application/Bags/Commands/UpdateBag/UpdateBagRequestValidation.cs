@@ -1,7 +1,6 @@
-using DeliveryApp.Application.Bags.Commands.UpdateBag;
 using FluentValidation;
 
-namespace DeliveryApp.Application.Bags.Commands.CreateBag;
+namespace DeliveryApp.Application.Bags.Commands.UpdateBag;
 
 public class UpdateBagRequestValidation : AbstractValidator<UpdateBagCommand>
 {

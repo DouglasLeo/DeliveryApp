@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DeliveryApp.Application.Users.Commands.UpdateUser;
 
-public class UpdateUserRequestValidation: AbstractValidator<CreateUserCommand>
+public class UpdateUserRequestValidation: AbstractValidator<UpdateUserCommand>
 {
     public UpdateUserRequestValidation()
     {

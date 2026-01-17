@@ -16,14 +16,9 @@ public class CreateBagHandler(IBagRepository bagRepository, IUserRepository user
         var user = await userRepository.UserExists(request.UserId, cancellationToken);
         if (!user) throw new NotFoundException("User not found");
 
-        var bag = new Bag
-        {
-            FoodsIds = request.FoodsIds,
-            UserId = request.UserId,
-        };
+        var bag = Bag.Create(request.UserId, request.FoodsIds);
 
         await bagRepository.Add(bag, cancellationToken);
-        await bagRepository.SaveChanges(cancellationToken);
 
         return bag.Id;
     }

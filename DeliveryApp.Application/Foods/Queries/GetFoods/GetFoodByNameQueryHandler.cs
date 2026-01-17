@@ -6,7 +6,7 @@ namespace DeliveryApp.Application.Foods.Queries.GetFoods;
 
 public record GetFoodByNameQuery(string Name) : IRequest<IEnumerable<FoodDto>>;
 
-public class GetFoodByName(IFoodRepository foodRepository) : IRequestHandler<GetFoodByNameQuery, IEnumerable<FoodDto>>
+public class GetFoodByNameQueryHandler(IFoodRepository foodRepository) : IRequestHandler<GetFoodByNameQuery, IEnumerable<FoodDto>>
 {
     public async Task<IEnumerable<FoodDto>> Handle(GetFoodByNameQuery request, CancellationToken cancellationToken)
         => await foodRepository.GetFoodByName(request.Name, cancellationToken);

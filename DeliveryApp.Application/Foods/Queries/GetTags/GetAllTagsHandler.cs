@@ -13,7 +13,7 @@ public class GetAllFoodCategoriesHandler(ITagRepository tagRepository)
 {
     public async Task<PaginatedList<TagDto>> Handle(GetAllTagsQuery request,
         CancellationToken cancellationToken)
-        => await tagRepository.GetAllTags(request.PageNumber, request.PageSize, cancellationToken)
+        => await tagRepository.GetAllTags()
             .ProjectToModel()
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+            .PaginatedListAsync(request.PageNumber, request.PageSize, cancellationToken);
 }

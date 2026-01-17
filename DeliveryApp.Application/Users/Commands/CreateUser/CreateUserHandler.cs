@@ -12,18 +12,13 @@ public class CreateUserHandler(IUserRepository userRepository) : IRequestHandler
 {
     public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var email = await userRepository.FindByEmail(request.Email, cancellationToken);
+        var email = await userRepository.FindUserByEmail(request.Email, cancellationToken);
 
         if (email is not null) throw new AlreadyExistsException("Email already exists");
 
         var passwordHash = BC.HashPassword(request.Password);
 
-        var user = new User
-        {
-            Name = request.Name,
-            Email = request.Email,
-            Password = passwordHash
-        };
+        var user = User.Create(request.Name, request.Email, passwordHash);
 
         await userRepository.Add(user, cancellationToken);
         await userRepository.SaveChanges(cancellationToken);

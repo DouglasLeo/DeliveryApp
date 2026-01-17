@@ -1,5 +1,7 @@
+using DeliveryApp.Domain.Entities.Address;
 using DeliveryApp.Domain.Entities.Food;
 using DeliveryApp.Domain.Entities.Order;
+using DeliveryApp.Domain.Entities.Shared;
 using DeliveryApp.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,8 +11,7 @@ public interface IApplicationDbContext
 {
     DbSet<User> Users { get; set; }
     DbSet<Role> Roles { get; set; }
-    DbSet<CreditCard> CreditCards { get; set; }
-    DbSet<UserRole> UserRoles { get; set; }
+    DbSet<Card> CreditCards { get; set; }
     DbSet<Address> Addresses { get; set; }
     DbSet<Order> Orders { get; set; }
     DbSet<OrderItems> OrderItems { get; set; }

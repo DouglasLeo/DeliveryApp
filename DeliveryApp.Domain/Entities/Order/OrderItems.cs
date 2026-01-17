@@ -1,3 +1,5 @@
+using DeliveryApp.Domain.Entities.Shared;
+
 namespace DeliveryApp.Domain.Entities.Order;
 
 public class OrderItems : Entity

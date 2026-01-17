@@ -15,10 +15,7 @@ public class CreateTagHandler(ITagRepository tagRepository) : IRequestHandler<Cr
 
         if (tag is not null) throw new AlreadyExistsException($"Tag with name {request.Name} already exists.");
 
-        var tagEntity = new Tag
-        {
-            Name = request.Name
-        };
+        var tagEntity = Tag.Create(request.Name);
 
         await tagRepository.Add(tagEntity, cancellationToken);
         await tagRepository.SaveChanges(cancellationToken);

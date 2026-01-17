@@ -14,7 +14,6 @@ public class DeleteBagHandler(IBagRepository bagRepository) : IRequestHandler<De
                   throw new NotFoundException("Bag not found");
 
         await bagRepository.Remove(bag, cancellationToken);
-        await bagRepository.SaveChanges(cancellationToken);
 
         return bag.Id;
     }

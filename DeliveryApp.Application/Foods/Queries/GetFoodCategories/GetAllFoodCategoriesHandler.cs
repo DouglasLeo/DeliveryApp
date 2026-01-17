@@ -14,7 +14,7 @@ public class GetAllFoodCategoriesHandler(IFoodCategoryRepository foodCategoryRep
 {
     public async Task<PaginatedList<FoodCategoryDto>> Handle(GetAllFoodCategoriesQuery request,
         CancellationToken cancellationToken)
-        => await foodCategoryRepository.GetAllFoodCategories(request.PageNumber, request.PageSize, cancellationToken)
+        => await foodCategoryRepository.GetAllFoodCategories()
             .ProjectToModel()
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+            .PaginatedListAsync(request.PageNumber, request.PageSize, cancellationToken);
 }
