@@ -16,7 +16,7 @@ public class DeleteCardHandler(ICardRepository cardRepository, IUserRepository u
 
         if (userUsingCard != null)
         {
-            userUsingCard.RemoveCard();;
+            userUsingCard.RemoveCard();
             await userRepository.Update(userUsingCard, cancellationToken);
         }
         

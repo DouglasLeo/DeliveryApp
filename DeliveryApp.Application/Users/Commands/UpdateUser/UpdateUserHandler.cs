@@ -4,11 +4,11 @@ using MediatR;
 
 namespace DeliveryApp.Application.Users.Commands.UpdateUser;
 
-public record UpdateUserCommand(Guid Id, string Name, string Email) : IRequest<Guid>;
+public record UpdateUserCommand(Guid Id, string Name, string Email) : IRequest;
 
-public class UpdateUserHandler(IUserRepository userRepository) : IRequestHandler<UpdateUserCommand, Guid>
+public class UpdateUserHandler(IUserRepository userRepository) : IRequestHandler<UpdateUserCommand>
 {
-    public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.FindById(request.Id, cancellationToken);
 
@@ -18,7 +18,5 @@ public class UpdateUserHandler(IUserRepository userRepository) : IRequestHandler
 
         await userRepository.Update(user, cancellationToken);
         await userRepository.SaveChanges(cancellationToken);
-
-        return user.Id;
     }
 }

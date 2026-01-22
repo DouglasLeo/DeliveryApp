@@ -11,11 +11,8 @@ public class CardConfiguration : EntityTypeConfiguration<Card>
         base.Configure(builder);
         
         builder.Property(c => c.Token).HasMaxLength(100).IsRequired();
-        builder.Property(c=> c.HolderName).IsRequired().HasMaxLength(100);
         builder.Property(c => c.CardBrand).IsRequired();
         builder.Property(c => c.CardType).IsRequired();
         builder.Property(c => c.CardFinalNumbers).IsRequired().HasMaxLength(4);
-        builder.Property(c => c.ExpirationMonth).IsRequired().HasMaxLength(2);
-        builder.Property(c => c.ExpirationYear).IsRequired().HasMaxLength(4);
     }
 }

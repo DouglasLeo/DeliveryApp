@@ -1,5 +1,18 @@
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace DeliveryApp.Application.Shared;
 
-public class DependencyInjection
+public static class DependencyInjection
 {
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        var assembly = typeof(DependencyInjection).Assembly;
+
+        services
+            .AddValidatorsFromAssembly(assembly)
+            .AddMediatR(x => x.RegisterServicesFromAssembly(assembly));
+
+        return services;
+    }
 }

@@ -4,7 +4,7 @@ public enum ECardBrand
 {
     Visa,
     MasterCard,
-    Amex,
+    AmericanExpress,
     Discover,
     DinersClub,
 }

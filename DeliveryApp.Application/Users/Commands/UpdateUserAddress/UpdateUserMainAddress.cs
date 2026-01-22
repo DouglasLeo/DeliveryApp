@@ -14,7 +14,7 @@ public class UpdateUserMainAddress(IUserRepository userRepository, IAddressRepos
         var user = await userRepository.FindById(request.UserId, cancellationToken) ?? throw new NotFoundException("User not found");
         var address = await addressRepository.FindById(request.MainAddressId, cancellationToken) ?? throw new NotFoundException("Address not found");
 
-        if (address.UserId != user.Id) throw new AddressUserMismatchException();
+        if (address.UserId != user.Id) throw new UserMismatchException("address");
         
         user.UpdateMainAddress(address);
         

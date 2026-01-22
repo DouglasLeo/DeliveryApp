@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DeliveryApp.Infrastructure.Persistence.Migrations
+namespace DeliveryApp.Infrastructure.Persistence.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -317,21 +317,6 @@ namespace DeliveryApp.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ExpirationMonth")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
-
-                    b.Property<string>("ExpirationYear")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("character varying(4)");
-
-                    b.Property<string>("HolderName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Token")
                         .IsRequired()

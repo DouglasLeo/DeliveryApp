@@ -5,7 +5,7 @@ using Riok.Mapperly.Abstractions;
 namespace DeliveryApp.Application.Common.Mappings;
 
 [Mapper(RequiredEnumMappingStrategy = RequiredMappingStrategy.Target)]
-public static partial class UserDtoMapperly
+public static partial class CardDtoMapperly
 {
-    public static partial IQueryable<UserDto> ProjectToModel(this IQueryable<User> model);
+    public static partial IQueryable<CardDto> ProjectToModel(this IQueryable<Card> model);
 }

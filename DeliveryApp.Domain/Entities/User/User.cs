@@ -17,7 +17,7 @@ public class User : Entity
     public List<Role> Roles { get; set; } = [];
     public List<Order.Order> Orders { get; set; } = [];
 
-    public void AddCardId(Guid cardId) => CardId = cardId;
+    public void UpdateCard(Guid cardId) => CardId = cardId;
 
     public void RemoveCard() => CardId = null;
 
