@@ -13,11 +13,11 @@ public record UpdateAddressCommand(
     string Neighboorhood,
     string Country,
     string? Complement,
-    string? Reference) : IRequest<Guid>;
+    string? Reference) : IRequest;
 
-public class UpdateAddressHandler(IAddressRepository addressRepository) : IRequestHandler<UpdateAddressCommand, Guid>
+public class UpdateAddressHandler(IAddressRepository addressRepository) : IRequestHandler<UpdateAddressCommand>
 {
-    public async Task<Guid> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
     {
         var address = await addressRepository.FindById(request.Id, cancellationToken) ??
                       throw new NotFoundException("Address not found");
@@ -27,7 +27,5 @@ public class UpdateAddressHandler(IAddressRepository addressRepository) : IReque
 
         await addressRepository.Update(address, cancellationToken);
         await addressRepository.SaveChanges(cancellationToken);
-
-        return address.Id;
     }
 }

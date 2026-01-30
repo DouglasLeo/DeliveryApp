@@ -24,11 +24,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\Address\" />
-    <Folder Include="Endpoints\Bag\" />
-    <Folder Include="Endpoints\Food\" />
-    <Folder Include="Endpoints\Order\" />
-  </ItemGroup>
-
 </Project>

@@ -2,6 +2,9 @@ using DeliveryApp.Application.Adresses.Abstractions;
 using DeliveryApp.Application.Bags.Abstractions.Repositories;
 using DeliveryApp.Application.Foods.Abstractions.Repositories;
 using DeliveryApp.Application.Orders.Abstractions.Repositories;
+using DeliveryApp.Application.Orders.Payments;
+using DeliveryApp.Application.Orders.Payments.Abstractions;
+using DeliveryApp.Application.Orders.Payments.Strategies;
 using DeliveryApp.Application.Users.Abstractions.Repositories;
 using DeliveryApp.Domain;
 using DeliveryApp.Infrastructure.Persistence.Mongo;
@@ -26,6 +29,30 @@ public static class InfrasctrutureDependency
     {
         services.AddPostgres();
         services.AddMongo();
+        services.ResolveDependencies();
+    }
+
+    private static void ResolveDependencies(
+        this IServiceCollection services)
+    {
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderItemsRepository, OrderItemsRepository>();
+        services.AddScoped<IBagRepository, BagRepository>();
+        services.AddScoped<IFoodRepository, FoodRepository>();
+        services.AddScoped<IFoodCategoryRepository, FoodCategoryRepository>();
+        services.AddScoped<IFoodImageRepository, FoodImageRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<ICardRepository, CardRepository>();
+
+        services.AddScoped<IPaymentStrategy, CashPaymentStrategy>();
+        services.AddScoped<IPaymentStrategy, DebitCardPaymentStrategy>();
+        services.AddScoped<IPaymentStrategy, CreditCardPaymentStrategy>();
+
+        services.AddScoped<PaymentStrategyFactory>();
+
+        services.AddSingleton<IFileStorageService, FileStorageService>();
     }
 
     private static void AddPostgres(
@@ -39,27 +66,14 @@ public static class InfrasctrutureDependency
                 providerOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
             });
         });
-
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IOrderItemsRepository, OrderItemsRepository>();
-        services.AddScoped<IBagRepository, BagRepository>();
-        services.AddScoped<IFoodRepository, FoodRepository>();
-        services.AddScoped<IFoodCategoryRepository, FoodCategoryRepository>();
-        services.AddScoped<IFoodImageRepository, FoodImageRepository>();
-        services.AddScoped<IAddressRepository, AddressRepository>();
-        services.AddScoped<ITagRepository, TagRepository>();
-        services.AddScoped<ICardRepository, CardRepository>();
-
-        services.AddSingleton<IFileStorageService, FileStorageService>();
     }
 
     private static void AddMongo(
         this IServiceCollection services)
     {
-        services.AddSingleton<IMongoCollectionInitializer, BagCollectionInitializer>();
-
         services.AddSingleton<MongoDbContext>();
+
+        services.AddSingleton<IMongoCollectionInitializer, BagCollectionInitializer>();
 
         services.AddSingleton<MongoInitializer>();
 

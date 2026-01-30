@@ -14,10 +14,11 @@ public class CreateFoodRequestValidation : AbstractValidator<CreateFoodCommand>
         RuleFor(x => x.FoodCategoryId).NotEmpty().WithMessage("Food category id cannot be empty.");
         
         RuleFor(x => x.Image)
-            .Must(f => f.Length <= 5 * 1024 * 1024)
+            .Must(f => f!.Length <= 5 * 1024 * 1024)
             .WithMessage("The image size cannot exceed 5MB.")
             .Must(f => new[] { ".jpg", ".jpeg", ".png" }
-                .Contains(Path.GetExtension(f.FileName).ToLowerInvariant()))
-            .WithMessage("Invalid image format. Use JPG or PNG.");
+                .Contains(Path.GetExtension(f!.FileName).ToLowerInvariant()))
+            .WithMessage("Invalid image format. Use JPG or PNG.")
+            .When(x => x.Image is not null);
     }
 }

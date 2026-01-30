@@ -14,22 +14,17 @@ public class FoodRepository : Repository<Food>, IFoodRepository
     {
     }
 
-    private IQueryable<Food> FoodDtoBaseQuery() => DbSet.AsNoTracking().Include(f => f.FoodImage).Where(f => f.Active);
-    private IQueryable<Food> FoodDtoBaseQueryWithInactives() => DbSet.AsNoTracking().Include(f => f.FoodImage);
+    private IQueryable<Food> FoodDtoBaseQuery() => DbSet.AsNoTracking().Include(f => f.FoodImage)
+        .Include(f => f.FoodCategory).Include(f => f.Tags).Where(f => f.Active);
 
-    public async Task<IEnumerable<FoodDto>> GetFoodByName(string name, CancellationToken cancellationToken) =>
-        await FoodDtoBaseQuery().Where(f => f.Name.Contains(name)).ProjectToModel().ToListAsync(cancellationToken);
+    private IQueryable<Food> FoodDtoBaseQueryWithInactives() =>
+        DbSet.AsNoTracking().Include(f => f.FoodImage).Include(f => f.FoodCategory).Include(f => f.Tags);
 
     public async Task<IEnumerable<FoodDto>> GetAllFoods(int skip, int take, CancellationToken cancellationToken) =>
         await FoodDtoBaseQuery().Skip(skip).Take(take).ProjectToModel().ToListAsync(cancellationToken);
 
     public async Task<FoodDto?> GetFoodById(Guid id, CancellationToken cancellationToken) =>
         (await FoodDtoBaseQuery().SingleOrDefaultAsync(f => f.Id == id, cancellationToken))?.ToDto();
-
-    public async Task<IEnumerable<FoodDto>>
-        GetFoodByNameWithInactives(string name, CancellationToken cancellationToken) =>
-        await FoodDtoBaseQueryWithInactives().Where(f => f.Name.Contains(name)).ProjectToModel()
-            .ToListAsync(cancellationToken);
 
     public async Task<IEnumerable<FoodDto>> GetAllFoodsWithInactives(int skip, int take,
         CancellationToken cancellationToken) =>

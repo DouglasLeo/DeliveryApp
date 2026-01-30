@@ -30,16 +30,22 @@ public class Order : Entity
     }
 
     public static Order Create(Guid requestUserId, EOrderStatus requestOrderStatus, EPaymentMethod paymentMethod,
-        Card card, Address.Address address)
-        => new Order
+        Card? card, Address.Address address)
+    {
+        if (paymentMethod != EPaymentMethod.Cash && card is null)
+            throw new ArgumentException("Payment Method with Card needs a user card defined", nameof(paymentMethod));
+
+        return new Order
         {
             UserId = requestUserId, OrderStatus = requestOrderStatus,
             PaymentMethod = paymentMethod,
             CardFinalNumber = paymentMethod is EPaymentMethod.CreditCard or EPaymentMethod.DebitCard
-                ? card.CardFinalNumbers
+                ? card!.CardFinalNumbers
                 : null,
             Street = address.Street,
             HouseNumber = address.HouseNumber, PostalCode = address.PostalCode, City = address.City,
-            Country = address.Country, Complement = address.Complement,Reference = address.Reference, Neighboorhood = address.Neighboorhood
+            Country = address.Country, Complement = address.Complement, Reference = address.Reference,
+            Neighboorhood = address.Neighboorhood
         };
+    }
 }

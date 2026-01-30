@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace DeliveryApp.Application.Foods.Queries.GetFoods;
 
-public class GetAllFoodsWithInactivesQueryRequestValidation : AbstractValidator<GetAllFoodsQuery>
+public class GetAllFoodsWithInactivesQueryRequestValidation : AbstractValidator<GetAllFoodsWithInactivesQuery>
 {
     public GetAllFoodsWithInactivesQueryRequestValidation()
     {

@@ -1,6 +1,7 @@
 using DeliveryApp.Application.Adresses.Abstractions;
 using DeliveryApp.Application.Foods.Abstractions.Repositories;
 using DeliveryApp.Application.Orders.Abstractions.Repositories;
+using DeliveryApp.Application.Orders.Payments;
 using DeliveryApp.Application.Users.Abstractions.Repositories;
 using DeliveryApp.Domain.Entities.Order;
 using DeliveryApp.Domain.Enums;
@@ -21,7 +22,7 @@ public class CreateOrderHandler(
     IFoodRepository foodRepository,
     IUserRepository userRepository,
     IAddressRepository addressRepository,
-    ICardRepository cardRepository) : IRequestHandler<CreateOrderCommand, Guid>
+    PaymentStrategyFactory paymentStrategyFactory) : IRequestHandler<CreateOrderCommand, Guid>
 {
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
@@ -37,12 +38,11 @@ public class CreateOrderHandler(
 
         var address = await addressRepository.FindById(user.AddressId.Value, cancellationToken) ??
                       throw new NotFoundException("User Address not found");
-        
-        if (user.CardId is null) throw new NotDefinedException("Card");
-        
-        var card = await cardRepository.FindById(user.AddressId.Value, cancellationToken) ??
-                      throw new NotFoundException("User card not found");
-        
+
+        var paymentStrategy = paymentStrategyFactory.Get(request.PaymentMethod);
+
+        var card = await paymentStrategy.ResolveAsync(user, cancellationToken);
+
         var order = Order.Create(request.UserId, request.OrderStatus, request.PaymentMethod, card, address);
         var orderItems = OrderItems.Create(foodItems, order.Id);
 

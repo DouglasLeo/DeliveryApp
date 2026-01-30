@@ -15,7 +15,7 @@ public class CreateFoodCategoryHandler(IFoodCategoryRepository foodCategoryRepos
         var foodCategory = await foodCategoryRepository.FindByName(request.Name, cancellationToken);
 
         if (foodCategory is not null)
-            throw new AlreadyExistsException($"Food Category with name {request.Name} already exists.");
+            throw new ConflictException($"Food Category with name {request.Name} already exists.");
 
         var category = FoodCategory.Create(request.Name);
 

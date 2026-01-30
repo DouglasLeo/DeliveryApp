@@ -13,7 +13,7 @@ public class UpdaterUserCardHandler(IUserRepository userRepository, ICardReposit
         var user = await userRepository.FindById(request.UserId, cancellationToken) ?? throw new NotFoundException("User not found");
         var card = await cardRepository.FindById(request.CardId, cancellationToken) ?? throw new NotFoundException("Card not found");
 
-        if (card.UserId != user.Id) throw new UserMismatchException("card");
+        if (card.UserId != user.Id) throw new MismatchException("card", "user");
         
         user.UpdateCard(card.Id);
         

@@ -13,7 +13,7 @@ public class CreateTagHandler(ITagRepository tagRepository) : IRequestHandler<Cr
     {
         var tag = await tagRepository.FindByName(request.Name, cancellationToken);
 
-        if (tag is not null) throw new AlreadyExistsException($"Tag with name {request.Name} already exists.");
+        if (tag is not null) throw new ConflictException($"Tag with name {request.Name} already exists.");
 
         var tagEntity = Tag.Create(request.Name);
 

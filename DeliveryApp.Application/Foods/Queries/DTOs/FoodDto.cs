@@ -6,5 +6,6 @@ public record FoodDto(
     string? Description,
     decimal Price,
     string? ImageUrl,
+    bool Active,
     FoodCategoryDto FoodCategoryName,
     IEnumerable<TagDto> Tags);
