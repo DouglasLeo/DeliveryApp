@@ -6,6 +6,12 @@ public class CreateBagRequestValidation : AbstractValidator<CreateBagCommand>
 {
     public CreateBagRequestValidation()
     {
-        RuleFor(x => x.FoodsIds).NotEmpty().WithMessage("Foods cannot be empty");
+        RuleFor(x => x.Items)
+            .NotEmpty()
+            .WithMessage("Items cannot be empty");
+        
+        RuleForEach(x => x.Items)
+            .Must(item => item.Value > 0)
+            .WithMessage("Quantity must be greater than zero");
     }
 }

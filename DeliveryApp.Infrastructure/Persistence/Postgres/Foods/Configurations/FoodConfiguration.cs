@@ -30,7 +30,5 @@ public class FoodConfiguration : EntityTypeConfiguration<Food>
 
         builder.HasOne(f => f.FoodCategory).WithMany()
             .HasForeignKey(f => f.FoodCategoryId);
-
-        builder.HasIndex(f => f.Name);
     }
 }

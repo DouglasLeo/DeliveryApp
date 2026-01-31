@@ -4,7 +4,7 @@ using MediatR;
 
 namespace DeliveryApp.Application.Bags.Commands.UpdateBag;
 
-public record UpdateBagCommand(Guid Id, IEnumerable<Guid> FoodsIds) : IRequest<Guid>;
+public record UpdateBagCommand(Guid Id, Dictionary<Guid, int> Items) : IRequest<Guid>;
 
 public class UpdateBagHandler(IBagRepository bagRepository) : IRequestHandler<UpdateBagCommand, Guid>
 {
@@ -13,10 +13,10 @@ public class UpdateBagHandler(IBagRepository bagRepository) : IRequestHandler<Up
         var bag = await bagRepository.FindById(request.Id, cancellationToken) ??
                   throw new NotFoundException("Bag not found");
 
-        if (!request.FoodsIds.Any())
+        if (!request.Items.Any())
             await bagRepository.Remove(bag, cancellationToken);
 
-        bag.Update(request.FoodsIds);
+        bag.Update(request.Items);
         await bagRepository.Update(bag, cancellationToken);
 
         return bag.Id;

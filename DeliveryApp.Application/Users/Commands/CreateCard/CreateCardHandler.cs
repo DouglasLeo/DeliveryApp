@@ -9,9 +9,6 @@ namespace DeliveryApp.Application.Users.Commands.CreateCard;
 public record CreateCardCommand(
     Guid UserId,
     string Token,
-    string HolderName,
-    string ExpirationMonth,
-    string ExpirationYear,
     string CardFinalNumbers,
     ECardType Type,
     ECardBrand Brand) : IRequest<Guid>;
@@ -20,23 +17,23 @@ public class CreateCardHandler(ICardRepository cardRepository, IUserRepository u
     : IRequestHandler<CreateCardCommand, Guid>
 {
     private const int CardsLimit = 10;
-    
+
     public async Task<Guid> Handle(CreateCardCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.FindUserWithCards(request.UserId, cancellationToken) ??
                    throw new NotFoundException("User not found");
 
         if (user.Cards.Count >= CardsLimit) throw new LimitExceededException("Cards", CardsLimit);
-        
-        var card = Card.Create(request.UserId, request.Token, request.HolderName, request.ExpirationMonth, request.ExpirationYear,
+
+        var card = Card.Create(request.UserId, request.Token,
             request.Type, request.Brand, request.CardFinalNumbers);
-        
-        user.AddCardId(card.Id);
-        
+
+        user.UpdateCard(card.Id);
+
         await userRepository.Update(user, cancellationToken);
         await cardRepository.Add(card, cancellationToken);
         await cardRepository.SaveChanges(cancellationToken);
-        
+
         return card.Id;
     }
 }

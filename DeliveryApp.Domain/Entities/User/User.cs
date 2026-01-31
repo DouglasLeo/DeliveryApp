@@ -17,7 +17,7 @@ public class User : Entity
     public List<Role> Roles { get; set; } = [];
     public List<Order.Order> Orders { get; set; } = [];
 
-    public void AddCardId(Guid cardId) => CardId = cardId;
+    public void UpdateCard(Guid cardId) => CardId = cardId;
 
     public void RemoveCard() => CardId = null;
 
@@ -44,9 +44,9 @@ public class User : Entity
         UpdatedAt = DateTimeOffset.UtcNow;
     }
 
-    public void UpdateMainAddress(Address.Address address)
+    public void UpdateMainAddress(Address.Address? address)
     {
-        AddressId = address.Id;
+        AddressId = address?.Id;
         MainAddress = address;
         UpdatedAt = DateTimeOffset.UtcNow;
     }
@@ -55,5 +55,18 @@ public class User : Entity
     {
         Password = hashPassword;
         UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void RemoveAddress(Address.Address address)
+    {
+        if (Addresses.All(a => a.Id != address.Id))
+            return;
+
+        Addresses.Remove(address);
+
+        if (AddressId != address.Id) return;
+        
+        var newMainAddress = Addresses.FirstOrDefault();
+        UpdateMainAddress(newMainAddress);
     }
 }

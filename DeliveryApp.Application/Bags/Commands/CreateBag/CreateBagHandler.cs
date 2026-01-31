@@ -6,7 +6,7 @@ using MediatR;
 
 namespace DeliveryApp.Application.Bags.Commands.CreateBag;
 
-public record CreateBagCommand(Guid UserId, IEnumerable<Guid> FoodsIds) : IRequest<Guid>;
+public record CreateBagCommand(Guid UserId, Dictionary<Guid, int> Items) : IRequest<Guid>;
 
 public class CreateBagHandler(IBagRepository bagRepository, IUserRepository userRepository)
     : IRequestHandler<CreateBagCommand, Guid>
@@ -16,9 +16,11 @@ public class CreateBagHandler(IBagRepository bagRepository, IUserRepository user
         var user = await userRepository.UserExists(request.UserId, cancellationToken);
         if (!user) throw new NotFoundException("User not found");
 
-        var bag = Bag.Create(request.UserId, request.FoodsIds);
+        var existingBag = await bagRepository.FindBagByUserId(request.UserId, cancellationToken);
 
-        await bagRepository.Add(bag, cancellationToken);
+        var bag = Bag.CreateOrUpdate(existingBag, request.UserId, request.Items);
+
+        await bagRepository.UpsertBag(bag, cancellationToken);
 
         return bag.Id;
     }

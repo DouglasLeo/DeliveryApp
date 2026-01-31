@@ -14,15 +14,22 @@ public class OrderRepository : Repository<Order>, IOrderRepository
     {
     }
 
+    private IQueryable<Order> BaseQuery() => DbSet
+        .AsNoTracking()
+        .Include(x => x.OrderItems)
+        .ThenInclude(oi => oi.Food)
+        .ThenInclude(f => f.FoodCategory)
+        .Include(x => x.OrderItems)
+        .ThenInclude(oi => oi.Food)
+        .ThenInclude(f => f.Tags);
+
     public async Task<IEnumerable<OrderDto>> FindAllOrdersById(Guid userId, CancellationToken cancellationToken) =>
-        await DbSet
-            .AsNoTracking()
+        await BaseQuery()
             .Where(x => x.UserId == userId)
             .ToDto()
             .ToListAsync(cancellationToken);
 
     public async Task<OrderDto?> FindOrderById(Guid id, CancellationToken cancellationToken) =>
-        (await DbSet
-            .AsNoTracking()
+        (await BaseQuery()
             .SingleOrDefaultAsync(o => o.Id == id, cancellationToken))?.ToDto();
 }

@@ -1,4 +1,3 @@
-using DeliveryApp.Application.Adresses.Queries;
 using DeliveryApp.Application.Foods.Queries.DTOs;
 using DeliveryApp.Domain.Enums;
 
@@ -9,4 +8,11 @@ public record OrderDto(
     EOrderStatus EOrderStatus,
     DateTime Created,
     IEnumerable<FoodDto> FoodDtos,
-    AddressDto AddressDto);
+    string Street,
+    string HouseNumber,
+    string PostalCode,
+    string City,
+    string Neighboorhood,
+    string Country,
+    string? Reference,
+    string? Complement);

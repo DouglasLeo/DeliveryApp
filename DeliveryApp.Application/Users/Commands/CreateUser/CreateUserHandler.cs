@@ -14,7 +14,7 @@ public class CreateUserHandler(IUserRepository userRepository) : IRequestHandler
     {
         var email = await userRepository.FindUserByEmail(request.Email, cancellationToken);
 
-        if (email is not null) throw new AlreadyExistsException("Email already exists");
+        if (email is not null) throw new ConflictException("Email already exists");
 
         var passwordHash = BC.HashPassword(request.Password);
 

@@ -4,11 +4,11 @@ using MediatR;
 
 namespace DeliveryApp.Application.Users.Commands.DeleteUser;
 
-public record DeleteUserCommand(Guid Id) : IRequest<Guid>;
+public record DeleteUserCommand(Guid Id) : IRequest;
 
-public class DeleteUserHandler(IUserRepository userRepository) : IRequestHandler<DeleteUserCommand, Guid>
+public class DeleteUserHandler(IUserRepository userRepository) : IRequestHandler<DeleteUserCommand>
 {
-    public async Task<Guid> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.FindById(request.Id, cancellationToken) ?? throw new NotFoundException("Usuario não encontrado");
 
@@ -16,7 +16,5 @@ public class DeleteUserHandler(IUserRepository userRepository) : IRequestHandler
 
         await userRepository.Update(user, cancellationToken);
         await userRepository.SaveChanges(cancellationToken);
-
-        return user.Id;
     }
 }

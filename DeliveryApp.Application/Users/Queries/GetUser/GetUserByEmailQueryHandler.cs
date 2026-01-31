@@ -1,4 +1,5 @@
 using DeliveryApp.Application.Users.Abstractions.Repositories;
+using DeliveryApp.Application.Users.Queries.Dtos;
 using DeliveryApp.Domain.Exceptions;
 using MediatR;
 

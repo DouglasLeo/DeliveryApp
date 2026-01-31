@@ -13,8 +13,26 @@ public class BagRepository : IBagRepository
         _bags = context.Bags;
     }
 
-    public async Task Add(Bag bag, CancellationToken cancellationToken)
-        => await _bags.InsertOneAsync(bag, cancellationToken: cancellationToken);
+    public async Task UpsertBag(Bag bag,
+        CancellationToken cancellationToken)
+    {
+        var filter = Builders<Bag>.Filter.Eq(x => x.UserId, bag.UserId);
+
+        var update = Builders<Bag>.Update
+            .Set(x => x.BagItems, bag.BagItems)
+            .SetOnInsert(x => x.Id, bag.Id)
+            .SetOnInsert(x => x.UserId, bag.UserId);
+
+        await _bags.FindOneAndUpdateAsync(
+            filter,
+            update,
+            new FindOneAndUpdateOptions<Bag>
+            {
+                IsUpsert = true,
+            },
+            cancellationToken
+        );
+    }
 
     public async Task Update(Bag bag, CancellationToken cancellationToken)
     {
